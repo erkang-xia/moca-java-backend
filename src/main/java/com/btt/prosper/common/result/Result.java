@@ -1,4 +1,4 @@
-package com.sky.result;
+package com.btt.prosper.common.result;
 
 import lombok.Data;
 

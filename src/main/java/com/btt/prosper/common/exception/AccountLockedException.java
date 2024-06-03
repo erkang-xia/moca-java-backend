@@ -1,4 +1,4 @@
-package com.sky.exception;
+package com.btt.prosper.common.exception;
 
 /**
  * 账号被锁定异常

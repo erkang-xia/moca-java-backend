@@ -1,4 +1,4 @@
-package com.sky.exception;
+package com.btt.prosper.common.exception;
 
 public class DeletionNotAllowedException extends BaseException {
 

@@ -1,17 +1,17 @@
-package com.sky.interceptor;
+package com.btt.prosper.interceptor;
 
-import com.sky.constant.JwtClaimsConstant;
-import com.sky.context.BaseContext;
-import com.sky.properties.JwtProperties;
-import com.sky.utils.JwtUtil;
+import com.btt.prosper.common.constant.JwtClaimsConstant;
+import com.btt.prosper.common.context.BaseContext;
+import com.btt.prosper.common.properties.JwtProperties;
+import com.btt.prosper.common.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * jwt令牌校验的拦截器
@@ -32,6 +32,7 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
      * @return
      * @throws Exception
      */
+    @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 //        System.out.println("当前线程： " + Thread.currentThread().getId());
         //判断当前拦截到的是Controller的方法还是其他资源

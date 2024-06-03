@@ -17,7 +17,7 @@ spring:
 mybatis:
   #mapper配置文件
   mapper-locations: classpath:mapper/*.xml
-  type-aliases-package: com.erkang.prosper.entity
+  type-aliases-package: com.btt.prosper.entity
   configuration:
     #开启驼峰命名
     map-underscore-to-camel-case: true
@@ -30,11 +30,26 @@ logging:
         service: info
         controller: info
 
-#prosper:
-#  jwt:
-#    # 设置jwt签名加密时使用的秘钥
-#    admin-secret-key: itcast
-#    # 设置jwt过期时间
-#    admin-ttl: 7200000
-#    # 设置前端传递过来的令牌名称
-#    admin-token-name: token
+prosper:
+  jwt:
+    # 设置jwt签名加密时使用的秘钥
+    admin-secret-key: ${prosper.jwt.admin-secret-key}
+    # 设置jwt过期时间
+    admin-ttl: ${prosper.jwt.admin-ttl}
+    # 设置前端传递过来的令牌名称
+    admin-token-name: ${prosper.jwt.admin-token-name}
+    # 设置jwt签名加密时使用的秘钥
+    user-secret-key: ${prosper.jwt.user-secret-key}
+    # 设置jwt过期时间
+    user-ttl: ${prosper.jwt.user-ttl}
+    # 设置前端传递过来的令牌名称
+    user-token-name: ${prosper.jwt.user-token-name}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+  version: 3.0.1
+

@@ -1,4 +1,4 @@
-package com.sky.constant;
+package com.btt.prosper.common.constant;
 
 /**
  * 信息提示常量类

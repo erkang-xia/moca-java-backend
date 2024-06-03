@@ -1,4 +1,4 @@
-package com.sky.constant;
+package com.btt.prosper.common.constant;
 
 /**
  * 密码常量
