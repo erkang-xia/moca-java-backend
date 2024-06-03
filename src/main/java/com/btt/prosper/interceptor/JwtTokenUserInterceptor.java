@@ -5,6 +5,7 @@ import com.btt.prosper.common.context.BaseContext;
 import com.btt.prosper.common.properties.JwtProperties;
 import com.btt.prosper.common.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +35,17 @@ public class JwtTokenUserInterceptor implements HandlerInterceptor {
         }
 
         //1、从请求头中获取令牌
-        String token = request.getHeader(jwtProperties.getUserTokenName());
+//        String token = request.getHeader(jwtProperties.getUserTokenName());
+        String token = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(jwtProperties.getUserTokenName())) {
+                    token = cookie.getValue();
+                    break;
+                }
+            }
+        }
 
         //2、校验令牌
         try {

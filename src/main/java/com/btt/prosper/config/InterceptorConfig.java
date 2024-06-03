@@ -24,6 +24,7 @@ public class InterceptorConfig extends DelegatingWebMvcConfiguration {
 
         registry.addInterceptor(jwtTokenUserInterceptor)
                 .addPathPatterns("/user/**")
+                .addPathPatterns("/test/**")
                 .excludePathPatterns("/user/login");
     }
 }
