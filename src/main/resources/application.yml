@@ -1,0 +1,40 @@
+server:
+  port: 8081
+
+spring:
+  profiles:
+    active: dev
+  main:
+    allow-circular-references: true
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+#    druid:
+    driver-class-name: ${prosper.datasource.driver-class-name}
+    url: jdbc:mysql://${prosper.datasource.host}:${prosper.datasource.port}/${prosper.datasource.database}?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${prosper.datasource.username}
+    password: ${prosper.datasource.password}
+
+mybatis:
+  #mapper配置文件
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.erkang.prosper.entity
+  configuration:
+    #开启驼峰命名
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    com:
+      prosper:
+        mapper: debug
+        service: info
+        controller: info
+
+#prosper:
+#  jwt:
+#    # 设置jwt签名加密时使用的秘钥
+#    admin-secret-key: itcast
+#    # 设置jwt过期时间
+#    admin-ttl: 7200000
+#    # 设置前端传递过来的令牌名称
+#    admin-token-name: token
