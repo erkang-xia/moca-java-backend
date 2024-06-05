@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.btt.prosper.mapper.VisuospatialMapper">
+
+    <insert id="insertByTrailMakingDTO">
+        INSERT INTO visuospatial (test_id, user_id, dots, `lines`, click_sequence)
+        VALUES (#{trailMaking.testId}, #{userId}, #{trailMaking.dots, jdbcType=OTHER, typeHandler=com.btt.prosper.common.handler.JsonTypeHandler},
+                                                    #{trailMaking.lines, jdbcType=OTHER, typeHandler=com.btt.prosper.common.handler.JsonTypeHandler},
+                                                    #{trailMaking.clickSequence, jdbcType=OTHER, typeHandler=com.btt.prosper.common.handler.JsonTypeHandler})
+        ON DUPLICATE KEY UPDATE
+                             user_id = VALUES(user_id),
+                             dots = VALUES(dots),
+                            `lines` = VALUES(`lines`),
+                             click_sequence = VALUES(click_sequence)
+
+    </insert>
+
+
+    <update id="updateByTestId" parameterType="com.btt.prosper.entity.Visuospatial">
+
+    </update>
+
+</mapper>

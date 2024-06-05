@@ -6,6 +6,7 @@ import java.util.List;
 
 @Data
 public class TrailMakingDTO implements Serializable {
+    private String testId;
     private List<Dot> dots;
     private List<Line> lines;
     private List<Integer> clickSequence;
