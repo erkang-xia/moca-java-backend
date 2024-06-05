@@ -27,6 +27,5 @@ public class Visuospatial {
     private String visuoconstructionalClock;
     private String clockExpression;
     private Integer score;
-    private String completion_time;
-    private DateTime completed_on;
+    private DateTime completedOn;
 }

@@ -1,12 +1,11 @@
 package com.btt.prosper.service.impl;
 
-import com.btt.prosper.common.context.BaseContext;
 import com.btt.prosper.common.dto.TrailMakingDTO;
 import com.btt.prosper.entity.Visuospatial;
 import com.btt.prosper.mapper.VisuospatialMapper;
 import com.btt.prosper.service.VisuospatialService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +37,10 @@ public class VisuospatialServiceImpl implements VisuospatialService {
         // Save the JSON string to the database
 //        Long userId = BaseContext.getCurrentId();
         Long userId = 1L;
-        visuospatialMapper.insertByTrailMakingDTO(userId,trailMakingDTO);
+        Visuospatial visuospatial = new Visuospatial();
+        visuospatial.setUserId(userId);
+        BeanUtils.copyProperties(trailMakingDTO, visuospatial);
+        visuospatialMapper.insertVisuospatial(visuospatial);
 
     }
 
@@ -49,7 +51,7 @@ public class VisuospatialServiceImpl implements VisuospatialService {
      */
     public ResponseEntity<InputStreamResource> getGeometry(String testId) {
         Integer geometryId = (int) Math.round(Math.random() * GEOMETRY_COUNT);
-        String key = visuospatialMapper.selectById(geometryId, "2");
+        String key = visuospatialMapper.selectPictureKeyById(geometryId, "2");
         Visuospatial visuospatial = Visuospatial.builder().visuoconstructionalExample(key).build();
         visuospatialMapper.updateByTestId(visuospatial);
 

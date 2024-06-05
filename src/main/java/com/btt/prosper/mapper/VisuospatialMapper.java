@@ -1,8 +1,6 @@
 package com.btt.prosper.mapper;
 
-import com.btt.prosper.common.dto.TrailMakingDTO;
 import com.btt.prosper.entity.Visuospatial;
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -11,13 +9,26 @@ import org.apache.ibatis.annotations.Select;
 public interface VisuospatialMapper {
 
 
-
+    /**查询picture categoryId
+     *
+     * @param geometryId
+     * @param category
+     * @return
+     */
     @Select("select `key` from picture where category = #{category} and category_id = #{geometryId}")
-    String selectById(Integer geometryId, String category);
+    String selectPictureKeyById(Integer geometryId, String category);
 
 
+    /** update visuospatial by TestId
+     *
+     * @param visuospatial
+     */
     void updateByTestId(Visuospatial visuospatial);
 
 
-    void insertByTrailMakingDTO(Long userId, @Param("trailMaking") TrailMakingDTO trailMakingDTO);
+    /** insert new visuospatial
+     *
+     * @param visuospatial
+     */
+    void insertVisuospatial(@Param("visuospatial") Visuospatial visuospatial);
 }

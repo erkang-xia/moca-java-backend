@@ -3,22 +3,59 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.btt.prosper.mapper.VisuospatialMapper">
 
-    <insert id="insertByTrailMakingDTO">
-        INSERT INTO visuospatial (test_id, user_id, dots, `lines`, click_sequence)
-        VALUES (#{trailMaking.testId}, #{userId}, #{trailMaking.dots, jdbcType=OTHER, typeHandler=com.btt.prosper.common.handler.JsonTypeHandler},
-                                                    #{trailMaking.lines, jdbcType=OTHER, typeHandler=com.btt.prosper.common.handler.JsonTypeHandler},
-                                                    #{trailMaking.clickSequence, jdbcType=OTHER, typeHandler=com.btt.prosper.common.handler.JsonTypeHandler})
-        ON DUPLICATE KEY UPDATE
-                             user_id = VALUES(user_id),
-                             dots = VALUES(dots),
-                            `lines` = VALUES(`lines`),
-                             click_sequence = VALUES(click_sequence)
+    <insert id="insertVisuospatial">
+        INSERT INTO visuospatial (test_id, user_id, dots, `lines`, click_sequence, visuoconstructional_example, visuoconstructional_answer, visuoconstructional_clock, clock_expression, score, completed_on)
+        VALUES (
+        #{visuospatial.testId},
+        #{visuospatial.userId},
+        #{visuospatial.dots, jdbcType=OTHER, typeHandler=com.btt.prosper.common.handler.JsonTypeHandler},
+        #{visuospatial.lines, jdbcType=OTHER, typeHandler=com.btt.prosper.common.handler.JsonTypeHandler},
+        #{visuospatial.clickSequence, jdbcType=OTHER, typeHandler=com.btt.prosper.common.handler.JsonTypeHandler},
+        #{visuospatial.visuoconstructionalExample},
+        #{visuospatial.visuoconstructionalAnswer},
+        #{visuospatial.visuoconstructionalClock},
+        #{visuospatial.clockExpression},
+        #{visuospatial.score},
+        #{visuospatial.completedOn})
 
     </insert>
 
-
     <update id="updateByTestId" parameterType="com.btt.prosper.entity.Visuospatial">
-
+        UPDATE visuospatial
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="dots != null">
+                dots = #{dots, jdbcType=OTHER, typeHandler=com.btt.prosper.common.handler.JsonTypeHandler},
+            </if>
+            <if test="lines != null">
+                `lines` = #{lines, jdbcType=OTHER, typeHandler=com.btt.prosper.common.handler.JsonTypeHandler},
+            </if>
+            <if test="clickSequence != null">
+                click_sequence = #{clickSequence, jdbcType=OTHER, typeHandler=com.btt.prosper.common.handler.JsonTypeHandler},
+            </if>
+            <if test="visuoconstructionalExample != null">
+                visuoconstructional_example = #{visuoconstructionalExample},
+            </if>
+            <if test="visuoconstructionalAnswer != null">
+                visuoconstructional_answer = #{visuoconstructionalAnswer},
+            </if>
+            <if test="visuoconstructionalClock != null">
+                visuoconstructional_clock = #{visuoconstructionalClock},
+            </if>
+            <if test="clockExpression != null">
+                clock_expression = #{clockExpression},
+            </if>
+            <if test="score != null">
+                score = #{score},
+            </if>
+            <if test="completedOn != null">
+                completed_on = #{completedOn},
+            </if>
+        </set>
+        WHERE test_id = #{testId}
     </update>
+
 
 </mapper>
