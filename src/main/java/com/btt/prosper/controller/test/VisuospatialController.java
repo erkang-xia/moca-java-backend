@@ -2,12 +2,18 @@ package com.btt.prosper.controller.test;
 
 import com.btt.prosper.common.dto.TrailMakingDTO;
 import com.btt.prosper.common.result.Result;
+import com.btt.prosper.service.S3Service;
 import com.btt.prosper.service.VisuospatialService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+
+import static com.btt.prosper.common.constant.S3BucketConstant.BUCKET_NAME;
 
 @RestController
 @RequestMapping("/test/visuospatial")
@@ -17,6 +23,8 @@ public class VisuospatialController {
 
     @Autowired
     VisuospatialService visuospatialService;
+    @Autowired
+    private S3Service s3Service;
 
 //    @GetMapping("/dots")
 //    public Result<List<Integer>> getDots(Integer userId){
@@ -33,9 +41,24 @@ public class VisuospatialController {
     }
 
     @GetMapping("/geometry/{testId}")
-    public ResponseEntity<InputStreamResource> getGeometry(@PathVariable String testId){
+    public ResponseEntity<byte[]> getGeometry(@PathVariable String testId){
         log.info("Getting geometry {}", testId);
         return visuospatialService.getGeometry(testId);
+
+    }
+
+    @PostMapping("/geometry/{testId}")
+    public Result SaveGeometry(@PathVariable String testId, @RequestParam("file") MultipartFile file){
+        String key = file.getOriginalFilename();
+        log.info("Saving geometry {}", testId);
+        try {
+            s3Service.uploadFile(BUCKET_NAME, key, file.getBytes());
+            visuospatialService.saveGeometry(key,testId);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return Result.success();
 
     }
 

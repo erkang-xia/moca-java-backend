@@ -1,7 +1,6 @@
 package com.btt.prosper.service;
 
 import com.btt.prosper.common.dto.TrailMakingDTO;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
 
 public interface VisuospatialService {
@@ -17,5 +16,13 @@ public interface VisuospatialService {
      * @param testId
      * @return
      */
-    ResponseEntity<InputStreamResource> getGeometry(String testId);
+    ResponseEntity<byte[]> getGeometry(String testId);
+
+    /**
+     * 储存 user geometry answer
+     *
+     * @param key
+     * @param testId
+     */
+    void saveGeometry(String key,String testId);
 }

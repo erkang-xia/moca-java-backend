@@ -29,7 +29,7 @@ public class UserController {
 
     @PostMapping("/login")
     public Result<UserVO> userLogin(@RequestBody User user) throws LoginFailedException {
-        log.info("员工登入:{}", user);
+        log.info("用户登入:{}", user);
         user = userService.login(user);
 
         //登录成功后，生成jwt令牌

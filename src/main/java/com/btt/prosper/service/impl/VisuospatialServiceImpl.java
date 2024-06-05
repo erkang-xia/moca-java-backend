@@ -3,17 +3,21 @@ package com.btt.prosper.service.impl;
 import com.btt.prosper.common.dto.TrailMakingDTO;
 import com.btt.prosper.entity.Visuospatial;
 import com.btt.prosper.mapper.VisuospatialMapper;
+import com.btt.prosper.service.S3Service;
 import com.btt.prosper.service.VisuospatialService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import static com.btt.prosper.common.constant.ExampleCountConstant.GEOMETRY_COUNT;
+import static com.btt.prosper.common.constant.S3BucketConstant.*;
 
 @Service
+@Slf4j
 public class VisuospatialServiceImpl implements VisuospatialService {
 
 
@@ -21,6 +25,8 @@ public class VisuospatialServiceImpl implements VisuospatialService {
     ObjectMapper objectMapper;
     @Autowired
     private VisuospatialMapper visuospatialMapper;
+    @Autowired
+    private S3Service s3Service;
 
     /**储存TrailMaking Test Result
      *
@@ -44,17 +50,35 @@ public class VisuospatialServiceImpl implements VisuospatialService {
 
     }
 
-    /**储存geometryId 并向前端传递图片
+    /**
+     * 储存geometryId 并向前端传递图片
      *
      * @param testId
      * @return
      */
-    public ResponseEntity<InputStreamResource> getGeometry(String testId) {
-        Integer geometryId = (int) Math.round(Math.random() * GEOMETRY_COUNT);
-        String key = visuospatialMapper.selectPictureKeyById(geometryId, "2");
-        Visuospatial visuospatial = Visuospatial.builder().visuoconstructionalExample(key).build();
+    public ResponseEntity<byte[]> getGeometry(String testId) {
+
+        Integer geometryId = (int) Math.round(Math.random() * GEOMETRY_COUNT-1)+1;
+        String key = visuospatialMapper.selectPictureKeyById(geometryId, GEOMETRY_CATEGORY);
+        Visuospatial visuospatial = Visuospatial.builder().visuoconstructionalExample(key).testId(testId).build();
         visuospatialMapper.updateByTestId(visuospatial);
 
-        return null;
+        byte[] res = s3Service.downloadFile(BUCKET_NAME, key);
+        log.info("Sending image with key {} and content type {}", key, MediaType.IMAGE_JPEG_VALUE);
+
+        return ResponseEntity.ok().contentType(MediaType.valueOf("image/jpeg")).body(res);
+    }
+
+    /**
+     * 储存user geometry answer key
+     *
+     * @param key
+     * @param testId
+     */
+    public void saveGeometry(String key, String testId) {
+
+        Visuospatial visuospatial = Visuospatial.builder().visuoconstructionalAnswer(key).testId(testId).build();
+        visuospatialMapper.updateByTestId(visuospatial);
+
     }
 }
