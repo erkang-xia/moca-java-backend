@@ -1,6 +1,7 @@
 package com.btt.prosper.controller;
 
 import com.btt.prosper.common.constant.JwtClaimsConstant;
+import com.btt.prosper.common.dto.UserLoginDTO;
 import com.btt.prosper.common.exception.LoginFailedException;
 import com.btt.prosper.common.properties.JwtProperties;
 import com.btt.prosper.common.result.Result;
@@ -28,9 +29,9 @@ public class UserController {
     private JwtProperties jwtProperties;
 
     @PostMapping("/login")
-    public Result<UserVO> userLogin(@RequestBody User user) throws LoginFailedException {
-        log.info("用户登入:{}", user);
-        user = userService.login(user);
+    public Result<UserVO> userLogin(@RequestBody UserLoginDTO userLoginDTO) throws LoginFailedException {
+        log.info("用户登入:{}", userLoginDTO);
+        User user = userService.login(userLoginDTO);
 
         //登录成功后，生成jwt令牌
         Map<String, Object> claims = new HashMap<>();

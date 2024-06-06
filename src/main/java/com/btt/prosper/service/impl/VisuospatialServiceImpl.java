@@ -2,6 +2,7 @@ package com.btt.prosper.service.impl;
 
 import com.btt.prosper.common.dto.TrailMakingDTO;
 import com.btt.prosper.entity.Visuospatial;
+import com.btt.prosper.mapper.PictureMapper;
 import com.btt.prosper.mapper.VisuospatialMapper;
 import com.btt.prosper.service.S3Service;
 import com.btt.prosper.service.VisuospatialService;
@@ -27,6 +28,8 @@ public class VisuospatialServiceImpl implements VisuospatialService {
     private VisuospatialMapper visuospatialMapper;
     @Autowired
     private S3Service s3Service;
+    @Autowired
+    private PictureMapper pictureMapper;
 
     /**储存TrailMaking Test Result
      *
@@ -42,11 +45,13 @@ public class VisuospatialServiceImpl implements VisuospatialService {
 
         // Save the JSON string to the database
 //        Long userId = BaseContext.getCurrentId();
+        //TODO: put back interceptor, and use real id
         Long userId = 1L;
         Visuospatial visuospatial = new Visuospatial();
         visuospatial.setUserId(userId);
         BeanUtils.copyProperties(trailMakingDTO, visuospatial);
-        visuospatialMapper.insertVisuospatial(visuospatial);
+//        visuospatialMapper.insertVisuospatial(visuospatial);
+        visuospatialMapper.updateVisuospatialByTestId(visuospatial);
 
     }
 
@@ -59,9 +64,9 @@ public class VisuospatialServiceImpl implements VisuospatialService {
     public ResponseEntity<byte[]> getGeometry(String testId) {
 
         Integer geometryId = (int) Math.round(Math.random() * GEOMETRY_COUNT-1)+1;
-        String key = visuospatialMapper.selectPictureKeyById(geometryId, GEOMETRY_CATEGORY);
+        String key = pictureMapper.selectPictureKeyById(geometryId, GEOMETRY_CATEGORY);
         Visuospatial visuospatial = Visuospatial.builder().visuoconstructionalExample(key).testId(testId).build();
-        visuospatialMapper.updateByTestId(visuospatial);
+        visuospatialMapper.updateVisuospatialByTestId(visuospatial);
 
         byte[] res = s3Service.downloadFile(BUCKET_NAME, key);
         log.info("Sending image with key {} and content type {}", key, MediaType.IMAGE_JPEG_VALUE);
@@ -78,7 +83,7 @@ public class VisuospatialServiceImpl implements VisuospatialService {
     public void saveGeometry(String key, String testId) {
 
         Visuospatial visuospatial = Visuospatial.builder().visuoconstructionalAnswer(key).testId(testId).build();
-        visuospatialMapper.updateByTestId(visuospatial);
+        visuospatialMapper.updateVisuospatialByTestId(visuospatial);
 
     }
 
@@ -90,7 +95,7 @@ public class VisuospatialServiceImpl implements VisuospatialService {
      */
     public void saveClock(String key, String testId) {
         Visuospatial visuospatial = Visuospatial.builder().visuoconstructionalClock(key).testId(testId).build();
-        visuospatialMapper.updateByTestId(visuospatial);
+        visuospatialMapper.updateVisuospatialByTestId(visuospatial);
 
     }
 
@@ -102,7 +107,7 @@ public class VisuospatialServiceImpl implements VisuospatialService {
      */
     public void saveClockExpression(String clockExpression, String testId) {
         Visuospatial visuospatial = Visuospatial.builder().clockExpression(clockExpression).testId(testId).build();
-        visuospatialMapper.updateByTestId(visuospatial);
+        visuospatialMapper.updateVisuospatialByTestId(visuospatial);
 
     }
 }
