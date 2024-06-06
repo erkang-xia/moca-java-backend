@@ -6,7 +6,6 @@ import com.btt.prosper.service.S3Service;
 import com.btt.prosper.service.VisuospatialService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -59,7 +58,28 @@ public class VisuospatialController {
             throw new RuntimeException(e);
         }
         return Result.success();
+    }
 
+    @PostMapping("/clock/{testId}")
+    public Result SaveClock(@PathVariable String testId, @RequestParam("file") MultipartFile file){
+        String key = file.getOriginalFilename();
+        log.info("Saving clock {}", testId);
+        try {
+            s3Service.uploadFile(BUCKET_NAME, key, file.getBytes());
+            visuospatialService.saveClock(key,testId);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return Result.success();
+    }
+
+    @PostMapping("/clock_expression/{testId}")
+    public Result SaveClockExpression(@PathVariable String testId, @RequestBody String clockExpression){
+        log.info("Saving clock_expression {}", testId);
+        visuospatialService.saveClockExpression(clockExpression,testId);
+
+        return Result.success();
     }
 
 

@@ -25,4 +25,21 @@ public interface VisuospatialService {
      * @param testId
      */
     void saveGeometry(String key,String testId);
+
+    /**
+     * 储存 user clock answer
+     *
+     * @param key
+     * @param testId
+     */
+    void saveClock(String key, String testId);
+
+
+    /**
+     * 储存 user clock expression
+     *
+     * @param clockExpression
+     * @param testId
+     */
+    void saveClockExpression(String clockExpression, String testId);
 }

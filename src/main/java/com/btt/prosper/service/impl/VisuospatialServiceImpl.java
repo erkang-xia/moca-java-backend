@@ -81,4 +81,28 @@ public class VisuospatialServiceImpl implements VisuospatialService {
         visuospatialMapper.updateByTestId(visuospatial);
 
     }
+
+    /**
+     * 储存 user clock answer
+     *
+     * @param key
+     * @param testId
+     */
+    public void saveClock(String key, String testId) {
+        Visuospatial visuospatial = Visuospatial.builder().visuoconstructionalClock(key).testId(testId).build();
+        visuospatialMapper.updateByTestId(visuospatial);
+
+    }
+
+    /**
+     * 储存 user clock expression
+     *
+     * @param clockExpression
+     * @param testId
+     */
+    public void saveClockExpression(String clockExpression, String testId) {
+        Visuospatial visuospatial = Visuospatial.builder().clockExpression(clockExpression).testId(testId).build();
+        visuospatialMapper.updateByTestId(visuospatial);
+
+    }
 }
